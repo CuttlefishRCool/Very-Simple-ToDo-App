@@ -1,11 +1,105 @@
 import './App.css'
+import { useState } from 'react'
 
 function App() {
-  // Add your code here
-  
+ const [todo, setTodo] = useState([]);
+ const [idCounter, setIdCounter] = useState(0);
+  function createTodo (){
+
+    const filter = {
+      1:"priority-high",
+      2:"priority-medium",
+      3:"priority-low"
+    }
+
+    let textContent = document.getElementById("cText").value;
+    let priority = filter[document.getElementById("cPriority").value];
+
+      setTodo(todo => [
+    ...todo,
+    {
+      Task: textContent,
+      Pri: priority,
+      Id: idCounter,
+      edit: false
+    }
+  ]);
+  setIdCounter(prev => prev + 1);
+  }
+
+  function editTodoStart(id){
+    setTodo(prev => prev.map(item => item.Id === id
+      ? {...item, edit:true} : item
+    ))
+  }
+
+  function saveEdit(id){
+      const filter = {
+      1:"priority-high",
+      2:"priority-medium",
+      3:"priority-low"
+    }
+let textContent = document.getElementById(`eText-${id}`).value;
+let priority = filter[document.getElementById(`ePriority-${id}`).value];
+
+
+ setTodo(prev => prev.map(item => item.Id === id
+      ? {...item, 
+      Task: textContent,
+      Pri: priority,
+      edit:false} : item
+    ));
+  }
+
+  function deleteTodo(id){
+      setTodo(prev => prev.filter(item => item.Id !== id));
+  }
+
   return (
     <>
-      {/* Add your code here */}
+      <h1>Very Simple Todo App</h1>
+      <div className="CreateNewTest" class ="New">
+      <label For='cText'>Write Description</label>
+      <textarea data-testid="create-todo-text" rows= "4" cols="50" id = "cText"></textarea>
+      <select data-testid="create-todo-priority" id = "cPriority">
+        <option value = "1">High</option>
+        <option value = "2">Medium</option>
+        <option value = "3">Low</option>
+      </select>
+      <button data-testid="create-todo" onClick = {createTodo} >Create</button>
+      </div>
+
+         <div class ="Result">
+      {todo.map((item, index) => (
+  <div class = {item.Pri} data-testid= "todo-item" key={index} id = "result">
+   {item.edit ? 
+   <div class ="Editing">
+   <label For='eText'>Edit Description</label>
+   <textarea data-testid="update-todo-text" rows= "4" cols="50" id = {`eText-${item.Id}`}>{item.Task}</textarea>
+    <select id = {`ePriority-${item.Id}`}>
+        <option value = "1">High</option>
+        <option value = "2">Medium</option>
+        <option value = "3">Low</option>
+      </select>
+      <button data-testid="update-todo" onClick = {() => saveEdit(item.Id)} >Save</button>
+   </div>
+   
+   : null}
+   
+   {!item.edit ? (
+    
+    <div>
+    <p>{item.Task}</p>
+    <button data-testid = "edit-todo" onClick = {() => editTodoStart(item.Id)}>Edit</button>
+    <button data-testid = "delete-todo" onClick = {() => deleteTodo(item.Id)}>Delete</button>
+    </div>
+    
+   ) : null}
+
+  </div>
+))}
+    </div> 
+
     </>
   )
 }

@@ -1,1 +1,69 @@
 /* Add your custom css here */
+
+.New {
+    position: relative;
+     display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 10px;
+}
+
+.New label{
+ position: absolute;
+  top: -10px;
+  left: 10px;
+  background: white;
+  padding: 0 5px;
+  font-size: 12px;
+}
+
+.New textarea {
+    margin-bottom: 10px;
+}
+
+.Default{
+    margin:10px;
+    border: 2px solid black;
+}
+
+.Editing {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 8px;
+}
+
+.Editing label{
+ position: absolute;
+  top: -10px;
+  left: 10px;
+  background: white;
+  padding: 0 5px;
+  font-size: 12px;
+
+}
+
+.Editing textarea {
+    margin-bottom: 10px;
+}
+
+.Editing select, button {
+    width: 100%;
+   max-width: 100px;
+}
+
+#result {
+    border: 2px black solid;
+    margin: 10px;
+}
+
+.priority-low{
+    background-color: rgb(127, 255, 122);
+}
+.priority-high{
+    background-color: rgb(247, 99, 99)
+}
+.priority-medium{
+    background-color: rgb(250, 255, 118);
+}
