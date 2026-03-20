@@ -1,9 +1,22 @@
 import './App.css'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 function App() {
- const [todo, setTodo] = useState([]);
- const [idCounter, setIdCounter] = useState(0);
+ const [todo, setTodo] = useState(() => {
+  const saved = localStorage.getItem("todos");
+  return saved ? JSON.parse(saved) : [];
+});
+
+ const [idCounter, setIdCounter] = useState(() => {
+  const saved = localStorage.getItem("idCounter");
+  return saved ? JSON.parse(saved) : 0;
+});
+
+    useEffect(() => {
+    localStorage.setItem("todos", JSON.stringify(todo));
+    localStorage.setItem("idCounter", JSON.stringify(idCounter));
+  }, [todo, idCounter]);
+
   function createTodo (){
 
     const filter = {
@@ -14,12 +27,14 @@ function App() {
 
     let textContent = document.getElementById("cText").value;
     let priority = filter[document.getElementById("cPriority").value];
+    let prin = document.getElementById("cPriority").value;
 
       setTodo(todo => [
     ...todo,
     {
       Task: textContent,
       Pri: priority,
+      Prin: prin,
       Id: idCounter,
       edit: false
     }
@@ -41,12 +56,13 @@ function App() {
     }
 let textContent = document.getElementById(`eText-${id}`).value;
 let priority = filter[document.getElementById(`ePriority-${id}`).value];
-
+ let prin = document.getElementById(`ePriority-${id}`).value;
 
  setTodo(prev => prev.map(item => item.Id === id
       ? {...item, 
       Task: textContent,
       Pri: priority,
+      Prin: prin,
       edit:false} : item
     ));
   }
@@ -57,6 +73,7 @@ let priority = filter[document.getElementById(`ePriority-${id}`).value];
 
   return (
     <>
+    {/* Creatin' */}
       <h1>Very Simple Todo App</h1>
       <div className="CreateNewTest" class ="New">
       <label For='cText'>Write Description</label>
@@ -70,9 +87,17 @@ let priority = filter[document.getElementById(`ePriority-${id}`).value];
       </div>
 
          <div class ="Result">
-      {todo.map((item, index) => (
-  <div class = {item.Pri} data-testid= "todo-item" key={index} id = "result">
+
+      {/* Sortin' */}
+  {[...todo]
+   .sort((a, b) => a.Prin - b.Prin)
+    .map((item, index) => (
+
+
+
+  <div class = {item.Pri} data-testid= "todo-item" key={index.id} id = "result">
    {item.edit ? 
+   /* Editin' */
    <div class ="Editing">
    <label For='eText'>Edit Description</label>
    <textarea data-testid="update-todo-text" rows= "4" cols="50" id = {`eText-${item.Id}`}>{item.Task}</textarea>
@@ -87,7 +112,7 @@ let priority = filter[document.getElementById(`ePriority-${id}`).value];
    : null}
    
    {!item.edit ? (
-    
+    /* Listin' */
     <div>
     <p>{item.Task}</p>
     <button data-testid = "edit-todo" onClick = {() => editTodoStart(item.Id)}>Edit</button>

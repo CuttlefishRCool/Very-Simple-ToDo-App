@@ -17,8 +17,14 @@
   font-size: 12px;
 }
 
+.New select, button {
+    width: 100%;
+   max-width: 100px;
+}
+
 .New textarea {
     margin-bottom: 10px;
+     max-width: 500px;
 }
 
 .Default{
@@ -46,6 +52,7 @@
 
 .Editing textarea {
     margin-bottom: 10px;
+         max-width: 500px;
 }
 
 .Editing select, button {
@@ -56,6 +63,7 @@
 #result {
     border: 2px black solid;
     margin: 10px;
+    max-width: 500px;
 }
 
 .priority-low{
